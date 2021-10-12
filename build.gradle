@@ -1,0 +1,41 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+plugins {
+    id 'org.springframework.boot' version '2.5.5' apply false
+    id 'org.jetbrains.kotlin.jvm' version('1.5.31')
+}
+
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+
+    group 'com.example.grpc'
+    version '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+        }
+        dependencies {
+        }
+    }
+
+    dependencies {
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+        implementation 'net.devh:grpc-spring-boot-starter:2.12.0.RELEASE'
+        implementation 'org.jetbrains.kotlin:kotlin-reflect'
+        implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation project(':grpc-protobuf')
+    implementation project(':grpc-client')
+    implementation project(':grpc-server')
+}
