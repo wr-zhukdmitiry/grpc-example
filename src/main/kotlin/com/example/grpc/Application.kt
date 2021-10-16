@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @SpringBootApplication
@@ -20,7 +21,7 @@ fun main(args: Array<String>) {
 open class Controller(private val client: Client) {
 
     @GetMapping
-    fun callClient() {
-        client.sendMessage()
+    fun callClient(@RequestParam firstName: String, @RequestParam lastName: String) {
+        client.sendMessage(firstName, lastName)
     }
 }

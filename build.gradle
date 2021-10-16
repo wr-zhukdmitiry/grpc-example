@@ -1,8 +1,13 @@
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 plugins {
+    id 'idea'
     id 'org.springframework.boot' version '2.5.5' apply false
     id 'org.jetbrains.kotlin.jvm' version('1.5.31')
 }
+
+apply from: 'test-unit.gradle'
+apply from: 'test-integration.gradle'
 
 allprojects {
     apply plugin: 'idea'
@@ -33,6 +38,14 @@ allprojects {
 }
 
 dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation("io.grpc:grpc-testing:1.41.0")
+    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("org.scala-lang:scala-library:2.12.11")
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation project(':grpc-protobuf')

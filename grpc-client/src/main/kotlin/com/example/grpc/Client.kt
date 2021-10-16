@@ -1,14 +1,11 @@
 package com.example.grpc
 
-import com.poc.grpc.Greeting
-import com.poc.grpc.GreetingRequest
-import com.poc.grpc.GreetingServiceGrpc.GreetingServiceBlockingStub
 
-class Client(private val greetingStub: GreetingServiceBlockingStub) {
+class Client(private val greetingStub: GreetingServiceGrpc.GreetingServiceBlockingStub) {
 
-    fun sendMessage() {
-        val greeting = Greeting.newBuilder().setFirstNumber("1").setSecondNumber("2").build()
+    fun sendMessage(firstName: String, lastName: String): GreetingResponse {
+        val greeting = Greeting.newBuilder().setFirstName(firstName).setLastName(lastName).build()
         val request = GreetingRequest.newBuilder().setGreeting(greeting).build()
-        println(greetingStub.greet(request).response)
+        return greetingStub.greet(request)
     }
 }

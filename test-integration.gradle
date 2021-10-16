@@ -1,0 +1,40 @@
+sourceSets {
+    integrationTest {
+        kotlin.srcDir "$projectDir/tests/integration/kotlin"
+        resources.srcDir "$projectDir/tests/integration/resources"
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+idea {
+    module {
+        testSourceDirs += project.sourceSets.integrationTest.kotlin.srcDirs
+    }
+}
+
+configurations {
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+task integrationTest(type: Test) {
+    description = "Service Tests"
+    group = "verification"
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+
+    useJUnitPlatform()
+
+    testLogging {
+        events = ["started", "passed", "skipped", "failed"]
+        showStandardStreams = false
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        exceptionFormat = "FULL"
+    }
+}
+
+test.dependsOn(integrationTest)
